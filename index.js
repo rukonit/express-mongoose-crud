@@ -30,9 +30,19 @@ app.use(methodOverride('_method'));
 const categories = ['fruit', 'vegetable', 'dairy'];
 
 app.get('/products', async (req, res) => {
+    const {category} = req.query;
+
+    if(category) {
+       const products = await Product.find({category});
+       res.render('products/index', {products, category})
+    }
+    
+    else {
     const products = await Product.find({});
-    console.log(products);
-    res.render('products/index', {products })
+    res.render('products/index', {products, category: 'All'})
+}
+    
+    
 })
 
 app.get('/products/new', (req, res) => {
